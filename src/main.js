@@ -1,9 +1,3 @@
-/**
- * @name scroll-listen
- * @version v0.1
- * @date 2020/07/06
- */
-
 (function (root, factory) {
   "use strict";
   if (typeof module === "object" && typeof module.exports === "object") {
@@ -54,6 +48,7 @@
     document.body.scrollHeight,
     document.documentElement.scrollHeight
   );
+  let availScrollHeight = pageHeight - viewSize.height;
   let selects = null;
   let pos = [];
 
@@ -85,15 +80,15 @@
   }
 
   function destory() {
-    return root.removeEventListener("scroll", scrollHandle);
+    root.removeEventListener("scroll", scrollHandle);
+    root.removeEventListener("resize", resizeHandle);
   }
 
   function scrollHandle(event) {
     let _scrollTop =
       document.documentElement.scrollTop || document.body.scrollTop;
     let scrollTop = _scrollTop + viewSize.height;
-    let availScrollHeight = pageHeight - viewSize.height;
-    let percent = scrollTop / availScrollHeight;
+    let percent = _scrollTop / availScrollHeight;
     let position = "scrolling";
     let value = _scrollTop;
     let justShow = [];
@@ -105,21 +100,22 @@
     if (percent >= 0.5 && percent < 0.6) position = "middle";
     if (percent >= 1) position = "end";
 
-    for (let i = 0; i < pos.length; i++) {
-      let temp = pos[i];
-      let offsetTop = temp.offsetTop;
-      let height = temp.height;
+    if (selects && selects.length)
+      for (let i = 0; i < pos.length; i++) {
+        let temp = pos[i];
+        let offsetTop = temp.offsetTop;
+        let height = temp.height;
 
-      if (scrollTop < offsetTop) {
-        hide = pos.slice(i);
-        break;
-      } else {
-        if (offsetTop + height * 0.2 >= scrollTop) justShow.push(temp);
-        if (offsetTop + height >= scrollTop) fullShow.push(temp);
+        if (scrollTop < offsetTop) {
+          hide = pos.slice(i);
+          break;
+        } else {
+          if (offsetTop + height * 0.2 >= scrollTop) justShow.push(temp);
+          if (offsetTop + height >= scrollTop) fullShow.push(temp);
 
-        show.push(temp);
+          show.push(temp);
+        }
       }
-    }
 
     options.onScroll({
       percent,
@@ -133,7 +129,13 @@
     });
   }
 
+  function resizeHandle() {
+    viewSize = getWindowSize();
+    availScrollHeight = pageHeight - viewSize.height;
+  }
+
   root.addEventListener("scroll", scrollHandle);
+  root.addEventListener("resize", resizeHandle);
 
   return { destory };
 });

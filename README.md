@@ -26,7 +26,7 @@
 
 > 在当前版本上每修复一个问题或优化一项，次版本号 +1 ～
 
-**当前版本(ver 0.1)**
+**当前版本(ver 0.1.1)**
 
 - 基于滚动中元素的可见性来赋予特定的行为。
 - 返回当前页面滚动的进度。
@@ -52,7 +52,8 @@ var _scroll = scrollListen({
 _scroll.destroy();
 ```
 
-* `elements`: 要被检查的滚动元素，取值类型
+* `elements`: 要被检查的滚动元素，取值类型有：`String | Array[string] | HTMLEelement | NodeList | HTMLCollection`。
+* `thottle` : 是否开启防抖？*预留参数*
 * `params` 参数说明：
 
 ```js
