@@ -1,26 +1,28 @@
-
 <!-- TOC -->
 
-- [Scroll-Listen 🖱️](#scroll-listen-)
+- [scrollEnhance 🖱️](#scrollenhance-)
     - [简介](#简介)
     - [项目规划](#项目规划)
     - [API 设计](#api-设计)
 
 <!-- /TOC -->
 
-# Scroll-Listen 🖱️
+# scrollEnhance 🖱️
 
 ## 简介
 
-“滚动监听(Scroll-Listen)” 是一款基于 `原生js` 开发的滚动条监控插件，它可以实时的返回滚动条的位置数据，目标是让滚动更好用。
+“滚动增强(scrollEnhance)” 是一款基于 `原生js` 开发的滚动条增强插件，它的的目的就是让滚动条更好用。
 
-通过 `Scroll-Listen` 可以实现的功能有：
+通过 `scrollEnhance` 可以实现的功能有：
 
-* 判断元素的可见性：可见的(show)、刚刚显示(justshow)、完全可见(fullshow)、不可见的(hide)。
-* 实现基于滚动条位置的进度条。
-* 获取滚动条的方向。
-* .....
-
+- 判断元素的可见性：可见的(show)、刚刚显示(justshow)、完全可见(fullshow)、不可见的(hide)。
+- 返回吸顶的元素。
+- 返回滚动进度。
+- 控制滚动事件是否节流。
+- 获取滚动条的方向。
+- 获取滚动条的状态，开始或者结束。
+- 兼容原生滚动条事件的事件对象。
+- .....
 
 ## 项目规划
 
@@ -28,15 +30,24 @@
 
 **当前版本(ver 0.1.1)**
 
-- 基于滚动中元素的可见性来赋予特定的行为。
+- 判断元素的可见性。
 - 返回当前页面滚动的进度。
 - 支持 `destroy()` 解除滚动方法。
+- 兼容原生滚动条事件的事件对象。
 
 **下一版本(ver 1.0)**
 
 - 加入节流提高性能。
+- 支持返回当前屏幕中可见的元素（不含已经卷去的元素，虽然它们也是显示了的）。
+- 返回吸顶的元素。
+- 获取滚动条的方向。
+- 获取滚动条的状态，开始或者结束。
+
+**NEXT 版本**
+
 - 支持特定的局部容器范围。
-- 支持返回当前屏幕可见的元素（不含已经卷去的元素，虽然它们也是现实了的）。
+- 重构返回参数，将所有的状态位置都继承到元素对象本身？
+- 通过组合构造函数的方式来重构代码。
 
 ## API 设计
 
@@ -52,9 +63,9 @@ var _scroll = scrollListen({
 _scroll.destroy();
 ```
 
-* `elements`: 要被检查的滚动元素，取值类型有：`String | Array[string] | HTMLEelement | NodeList | HTMLCollection`。
-* `thottle` : 是否开启防抖？*预留参数*
-* `params` 参数说明：
+- `elements`: 要被检查的滚动元素，取值类型有：`String | Array[string] | HTMLEelement | NodeList | HTMLCollection`。
+- `thottle` : 是否开启防抖？_预留参数_
+- `params` 参数说明：
 
 ```js
 {
